@@ -13,6 +13,7 @@
 </div>
 <br>
 <p>🔥 <b>Xiaohongshu Link Extraction/Content Collection Tool</b>：Extract account-published, favorited, and liked content links; extract search result content links and user links; collect Xiaohongshu content information; extract Xiaohongshu content download addresses; download Xiaohongshu watermark-free content files!</p>
+<p>⭐ This project is completely free and open-source, with no paid features. Please do not be deceived!</p>
 <p>⭐ Due to the author's limited energy, I was unable to update the English document in a timely manner, and the content may have become outdated, partial translation is machine translation, the translation result may be incorrect, Suggest referring to Chinese documentation. If you want to contribute to translation, we warmly welcome you.</p>
 <h1>📑 Project Features</h1>
 <ul><b>Program Features</b>
@@ -31,6 +32,7 @@
 <li>✅ Read cookies from browser</li>
 <li>✅ Customizable file name format</li>
 <li>✅ Support API call functionality</li>
+<li>✅ Support file breakpoint resume download</li>
 </ul>
 <ul><b>Script Features</b>
 <li>✅ Download Xiaohongshu watermark-free content files</li>
@@ -63,7 +65,7 @@
 <p>If you only need to download watermark-free content files, it is recommended to choose <b>Program Run</b>; if you have other needs, it is recommended to choose <b>Source Code Run</b>!</p>
 <p>It is recommended to set the <code>cookie</code> parameter manually; if this parameter is not set, the program functions may not work properly!</p>
 <h2>🖱 Program Run</h2>
-<p>Windows 10 and above users can go to <a href="https://github.com/JoeanAmier/XHS-Downloader/releases/latest">Releases</a> to download the program package, unzip it, open the program folder, and double-click to run <code>main.exe</code> to use.</p>
+<p>Mac OS, Windows 10 and above users can go to <a href="https://github.com/JoeanAmier/XHS-Downloader/releases/latest">Releases</a> to download the program package, unzip it, open the program folder, and double-click to run <code>main</code> to use.</p>
 <p>If you use the program in this way, the default download path for files is: <code>.\_internal\Download</code>; the configuration file path is: <code>.\_internal\settings.json</code></p>
 <h2>⌨️ Docker Run</h2>
 <ol>
@@ -82,8 +84,9 @@
 <h2>⌨️ Source Code Run</h2>
 <ol>
 <li>Install the Python interpreter with a version no lower than <code>3.12</code></li>
-<li>Run the command <code>pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt</code> to install the required modules</li>
 <li>Download the latest source code of this project or the source code released in <a href="https://github.com/JoeanAmier/XHS-Downloader/releases/latest">Releases</a> to your local machine</li>
+<li>Open the terminal and switch to the root path of the project</li>
+<li>Run the command <code>pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt</code> to install the required modules</li>
 <li>Run <code>main.py</code> to use</li>
 </ol>
 <h1>🛠 Command Line Mode</h1>
@@ -189,8 +192,8 @@ async def example():
     record_data = False  # 是否保存作品数据至文件
     image_format = "WEBP"  # 图文作品文件下载格式，支持：PNG、WEBP
     folder_mode = False  # 是否将每个作品的文件储存至单独的文件夹
-    async with XHS() as xhs:
-        pass  # 使用默认参数
+    # async with XHS() as xhs:
+    #     pass  # 使用默认参数
     async with XHS(work_path=work_path,
                    folder_name=folder_name,
                    name_format=name_format,
@@ -291,7 +294,7 @@ async def example():
 <td align="center">chunk</td>
 <td align="center">int</td>
 <td align="center">Size of data chunk to fetch from the server each time when downloading files, in bytes</td>
-<td align="center">1048576(1 MB)</td>
+<td align="center">2097152(2 MB)</td>
 </tr>
 <tr>
 <td align="center">max_retry</td>
@@ -334,6 +337,12 @@ async def example():
 <td align="center">bool</td>
 <td align="center">Whether to store each content's files in a separate folder; the folder name matches the file name</td>
 <td align="center">false</td>
+</tr>
+<tr>
+<td align="center">download_record</td>
+<td align="center">bool</td>
+<td align="center">Do record the ID of successfully downloaded works? If enabled, the program will automatically skip downloading works with records</td>
+<td align="center">true</td>
 </tr>
 <tr>
 <td align="center">language</td>
@@ -380,6 +389,7 @@ async def example():
 <p>If you are willing, you may consider making a donation to provide additional support for <b>XHS-Downloader</b>!</p>
 <h1>✉️ Contact the Author</h1>
 <ul>
+<li>Author's Email：yonglelolu@foxmail.com</li>
 <li>Author's WeChat: Downloader_Tools</li>
 <li><b>Discord Community</b>: <a href="https://discord.com/invite/ZYtmgKud9Y">Click to Join the Community</a></li>
 </ul>
@@ -413,6 +423,7 @@ async def example():
 * https://github.com/tiangolo/fastapi
 * https://github.com/textualize/textual/
 * https://textual.textualize.io/
+* https://github.com/omnilib/aiosqlite
 * https://aiosqlite.omnilib.dev/en/stable/
 * https://click.palletsprojects.com/en/8.1.x/
 * https://github.com/thewh1teagle/rookie

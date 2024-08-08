@@ -13,6 +13,7 @@
 </div>
 <br>
 <p>🔥 <b>小红书链接提取/作品采集工具</b>：提取账号发布、收藏、点赞作品链接；提取搜索结果作品链接、用户链接；采集小红书作品信息；提取小红书作品下载地址；下载小红书无水印作品文件！</p>
+<p>⭐ 本项目完全免费开源，无任何收费功能，请勿上当受骗！</p>
 <h1>📑 项目功能</h1>
 <ul><b>程序功能</b>
 <li>✅ 采集小红书作品信息</li>
@@ -30,6 +31,7 @@
 <li>✅ 从浏览器读取 Cookie</li> 
 <li>✅ 自定义文件名称格式</li> 
 <li>✅ 支持 API 调用功能</li>
+<li>✅ 支持文件断点续传下载</li>
 </ul>
 <ul><b>脚本功能</b>
 <li>✅ 下载小红书无水印作品文件</li>
@@ -62,7 +64,7 @@
 <p>如果仅需下载无水印作品文件，建议选择 <b>程序运行</b> 或 <b>Docker 运行</b>；如果有其他需求，建议选择 <b>源码运行</b>！</p>
 <p>建议自行设置 <code>cookie</code> 参数，若不设置该参数，程序功能可能无法正常使用！</p>
 <h2>🖱 程序运行</h2>
-<p>Windows 10 及以上用户可前往 <a href="https://github.com/JoeanAmier/XHS-Downloader/releases/latest">Releases</a> 下载程序压缩包，解压后打开程序文件夹，双击运行 <code>main.exe</code> 即可使用。</p>
+<p>Mac OS(尚未测试)、Windows 10 及以上用户可前往 <a href="https://github.com/JoeanAmier/XHS-Downloader/releases/latest">Releases</a> 下载程序压缩包，解压后打开程序文件夹，双击运行 <code>main</code> 即可使用。</p>
 <p>若通过此方式使用程序，文件默认下载路径为：<code>.\_internal\Download</code>；配置文件路径为：<code>.\_internal\settings.json</code></p>
 <h2>⌨️ Docker 运行</h2>
 <ol>
@@ -81,8 +83,9 @@
 <h2>⌨️ 源码运行</h2>
 <ol>
 <li>安装版本号不低于 <code>3.12</code> 的 Python 解释器</li>
-<li>运行 <code>pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt</code> 命令安装程序所需模块</li>
 <li>下载本项目最新的源码或 <a href="https://github.com/JoeanAmier/XHS-Downloader/releases/latest">Releases</a> 发布的源码至本地</li>
+<li>打开终端，切换至项目根路径</li>
+<li>运行 <code>pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt</code> 命令安装程序所需模块</li>
 <li>运行 <code>main.py</code> 即可使用</li>
 </ol>
 <h1>🛠 命令行模式</h1>
@@ -185,8 +188,8 @@ async def example():
     record_data = False  # 是否保存作品数据至文件
     image_format = "WEBP"  # 图文作品文件下载格式，支持：PNG、WEBP
     folder_mode = False  # 是否将每个作品的文件储存至单独的文件夹
-    async with XHS() as xhs:
-        pass  # 使用默认参数
+    # async with XHS() as xhs:
+    #     pass  # 使用默认参数
     async with XHS(work_path=work_path,
                    folder_name=folder_name,
                    name_format=name_format,
@@ -287,7 +290,7 @@ async def example():
 <td align="center">chunk</td>
 <td align="center">int</td>
 <td align="center">下载文件时，每次从服务器获取的数据块大小，单位：字节</td>
-<td align="center">1048576(1 MB)</td>
+<td align="center">2097152(2 MB)</td>
 </tr>
 <tr>
 <td align="center">max_retry</td>
@@ -330,6 +333,12 @@ async def example():
 <td align="center">bool</td>
 <td align="center">是否将每个作品的文件储存至单独的文件夹；文件夹名称与文件名称保持一致</td>
 <td align="center">false</td>
+</tr>
+<tr>
+<td align="center">download_record</td>
+<td align="center">bool</td>
+<td align="center">是否记录下载成功的作品 ID，如果开启，程序将会自动跳过下载存在记录的作品</td>
+<td align="center">true</td>
 </tr>
 <tr>
 <td align="center">language</td>
@@ -376,6 +385,7 @@ async def example():
 <p>如果您愿意，可以考虑提供资助为 <b>XHS-Downloader</b> 提供额外的支持！</p>
 <h1>✉️ 联系作者</h1>
 <ul>
+<li>作者邮箱：yonglelolu@foxmail.com</li>
 <li>作者微信: Downloader_Tools</li>
 <li>微信公众号: Downloader Tools</li>
 <li><b>Discord 社区</b>: <a href="https://discord.com/invite/ZYtmgKud9Y">点击加入社区</a></li>
@@ -412,6 +422,7 @@ async def example():
 * https://github.com/tiangolo/fastapi
 * https://github.com/textualize/textual/
 * https://textual.textualize.io/
+* https://github.com/omnilib/aiosqlite
 * https://aiosqlite.omnilib.dev/en/stable/
 * https://click.palletsprojects.com/en/8.1.x/
 * https://github.com/thewh1teagle/rookie
