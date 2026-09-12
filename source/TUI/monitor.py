@@ -1,66 +1,68 @@
-from typing import Callable
-
 from rich.text import Text
-from textual import on
-from textual import work
+from textual import on, work
 from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.screen import Screen
-from textual.widgets import Button
-from textual.widgets import Footer
-from textual.widgets import Header
-from textual.widgets import Label
-from textual.widgets import RichLog
+from textual.widgets import Button, Footer, Header, Label, RichLog
 
-from source.application import XHS
-from source.module import (
-    PROJECT,
-    MASTER,
+from ..application import XHS
+from ..module import (
     INFO,
+    PROJECT,
 )
+from ..translation import _
 
 __all__ = ["Monitor"]
 
 
 class Monitor(Screen):
     BINDINGS = [
-        Binding(key="Q", action="quit", description="退出程序/Quit"),
-        Binding(key="C", action="close", description="关闭监听/Close"),
+        Binding(key="Q", action="quit", description=_("退出程序")),
+        Binding(key="C", action="close", description=_("关闭监听")),
     ]
 
-    def __init__(self, app: XHS, message: Callable[[str], str]):
+    def __init__(
+        self,
+        app: XHS,
+    ):
         super().__init__()
         self.xhs = app
-        self.message = message
+        self._previous_print_func = None
 
     def compose(self) -> ComposeResult:
         yield Header()
-        yield Label(Text(self.message("已启动监听剪贴板模式"), style=INFO), classes="prompt")
+        yield Label(Text(_("已启动监听剪贴板模式"), style=INFO), classes="prompt")
         yield RichLog(markup=True, wrap=True)
-        yield Button(self.message("退出监听剪贴板模式"), id="close")
+        yield Button(_("退出监听剪贴板模式"), id="close")
         yield Footer()
 
     @on(Button.Pressed, "#close")
-    def close_button(self):
-        self.action_close()
+    async def close_button(self):
+        await self.action_close()
 
-    @work()
+    @work(exclusive=True)
     async def run_monitor(self):
-        await self.xhs.monitor(download=True, log=self.query_one(RichLog), data=False, )
-        self.action_close()
+        await self.xhs.monitor()
+        await self.action_close()
 
     def on_mount(self) -> None:
         self.title = PROJECT
-        self.query_one(RichLog).write(
-            Text(self.message(
-                "程序会自动读取并提取剪贴板中的小红书作品链接，并自动下载链接对应的作品文件，如需关闭，请点击关闭按钮，或者向剪贴板写入 “close” 文本！"),
-                style=MASTER))
+        self._previous_print_func = self.xhs.print.func
+        self.xhs.print.func = self.query_one(RichLog)
         self.run_monitor()
 
-    def action_close(self):
+    def _restore_print_func(self) -> None:
+        if self._previous_print_func is not None:
+            self.xhs.print.func = self._previous_print_func
+
+    async def action_close(self):
         self.xhs.stop_monitor()
-        self.app.pop_screen()
+        self._restore_print_func()
+        await self.app.action_back()
+
+    def on_unmount(self) -> None:
+        self._restore_print_func()
 
     async def action_quit(self) -> None:
-        self.action_close()
+        await self.action_close()
         await self.app.action_quit()
